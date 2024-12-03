@@ -1,0 +1,17 @@
+// IDEF1X Model for Pet Visit Database
+digraph {
+	subgraph cluster_Routes {
+		color=lightgrey style=filled
+		Routes [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0"><TR><TD COLSPAN="2" BGCOLOR="black"><FONT COLOR="white"><B>Routes</B></FONT></TD></TR><TR><TD ALIGN="LEFT">Code route</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">Route name</TD><TD ALIGN="LEFT"></TD></TR></TABLE>> shape=plaintext]
+	}
+	subgraph cluster_Transports {
+		color=lightgrey style=filled
+		Transports [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0"><TR><TD COLSPAN="2" BGCOLOR="black"><FONT COLOR="white"><B>Transports</B></FONT></TD></TR><TR><TD ALIGN="LEFT">Code Transport</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">Name transport</TD><TD ALIGN="LEFT"></TD></TR></TABLE>> shape=plaintext]
+	}
+	subgraph cluster_Result {
+		color=lightgrey style=filled
+		Result [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0"><TR><TD COLSPAN="2" BGCOLOR="black"><FONT COLOR="white"><B>Result</B></FONT></TD></TR><TR><TD ALIGN="LEFT">Code route</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">Code Transport</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">Cost</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">Availability of seats</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">Duration</TD><TD ALIGN="LEFT"></TD></TR></TABLE>> shape=plaintext]
+	}
+	Routes -> Result [label="1:M"]
+	Transports -> Result [label="1:M"]
+}

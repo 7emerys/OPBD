@@ -1,19 +1,37 @@
-import graphviz
+from graphviz import Digraph
 
-# Создаем новый граф
-dot = graphviz.Digraph(comment='Структура базы данных автозаправки')
+# Создаем объект для графа
+dot = Digraph(comment='IDEF1X Model for Database Structure with Foreign Keys')
 
-# Определяем таблицы
-dot.node('Топливо', '''Топливо\nТипТоплива (PK)\nЦенаЗаЛитр\nОстаток''')
-dot.node('Колонки', '''Колонки\nНомерКолонки (PK)\nТипТоплива (FK)''')
-dot.node('Счета', '''Счета\nНомерЧека (PK)\nНомерКолонки (FK)\nКоличество\nЦенаЗаЛитр\nСтоимость''')
-dot.node('Дисконтные карточки', '''Дисконтные карточки\nНомерКарточки (PK)\nОбщееКоличествоОтпущенногоТоплива\nСкидкаВПроцентах''')
+# Определяем стиль IDEF1X для сущностей
+def create_entity(dot, entity_name, attributes, pk):
+    with dot.subgraph(name='cluster_' + entity_name) as c:
+        c.attr(style='filled', color='lightgrey')
+        c.node(entity_name, shape='plaintext', label=f'<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">'
+                                                     f'<TR><TD COLSPAN="2" BGCOLOR="black"><FONT COLOR="white">'
+                                                     f'<B>{entity_name}</B></FONT></TD></TR>'
+                                                     + ''.join([f'<TR><TD ALIGN="LEFT">{attr}</TD>'
+                                                                f'<TD ALIGN="LEFT">{("PK" if attr == pk else "FK" if "ID" in attr else "")}</TD></TR>'
+                                                                for attr in attributes])
+                                                     + '</TABLE>>')
 
-# Определяем связи между таблицами
-dot.edge('Топливо', 'Колонки', '1:N')
-dot.edge('Колонки', 'Счета', '1:N')
-dot.edge('Дисконтные карточки', 'Счета', '1:N')
+# Определяем сущности и их атрибуты
+create_entity(dot, 'Categories', ['CategoryID', 'CategoryName', 'Description'], 'CategoryID')
+create_entity(dot, 'Products', ['ProductID', 'ProductName', 'Description', 'Price', 'CategoryID', 'StockQuantity'], 'ProductID')
+create_entity(dot, 'Sellers', ['SellerID', 'LastName', 'FirstName', 'MiddleName', 'Position', 'HomeAddress', 'Phone'], 'SellerID')
+create_entity(dot, 'Customers', ['CustomerID', 'LastName', 'FirstName', 'MiddleName', 'PassportData', 'HomeAddress', 'Phone'], 'CustomerID')
+create_entity(dot, 'Purchases', ['PurchaseID', 'PurchaseDate', 'CustomerID', 'SellerID'], 'PurchaseID')
+create_entity(dot, 'PurchaseItems', ['PurchaseItemID', 'PurchaseID', 'ProductID', 'Quantity'], 'PurchaseItemID')
 
-# Сохранение и показ графа
-dot.render('database_structure', format='png', cleanup=True)
+# Определяем связи между сущностями
+dot.edge('Categories', 'Products', label='1:M')
+dot.edge('Customers', 'Purchases', label='1:M')
+dot.edge('Sellers', 'Purchases', label='1:M')
+dot.edge('Purchases', 'PurchaseItems', label='1:M')
+dot.edge('Products', 'PurchaseItems', label='1:M')
+
+
+
+# Сохраняем и отображаем граф
+dot.render('db_structure', format='png', cleanup=True)
 dot.view()

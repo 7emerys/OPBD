@@ -1,0 +1,38 @@
+// IDEF1X Model for Medical Database
+digraph {
+	subgraph cluster_Doctors {
+		color=lightgrey style=filled
+		Doctors [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0"><TR><TD COLSPAN="2" BGCOLOR="black"><FONT COLOR="white"><B>Doctors</B></FONT></TD></TR><TR><TD ALIGN="LEFT">doctor_id</TD><TD ALIGN="LEFT">PK</TD></TR><TR><TD ALIGN="LEFT">full_name</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">address</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">date_of_birth</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">passport_data</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">specialty</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">category</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">experience</TD><TD ALIGN="LEFT"></TD></TR></TABLE>> shape=plaintext]
+	}
+	subgraph cluster_Patients {
+		color=lightgrey style=filled
+		Patients [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0"><TR><TD COLSPAN="2" BGCOLOR="black"><FONT COLOR="white"><B>Patients</B></FONT></TD></TR><TR><TD ALIGN="LEFT">patient_id</TD><TD ALIGN="LEFT">PK</TD></TR><TR><TD ALIGN="LEFT">full_name</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">date_of_birth</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">policy_number</TD><TD ALIGN="LEFT"></TD></TR></TABLE>> shape=plaintext]
+	}
+	subgraph cluster_Clinics {
+		color=lightgrey style=filled
+		Clinics [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0"><TR><TD COLSPAN="2" BGCOLOR="black"><FONT COLOR="white"><B>Clinics</B></FONT></TD></TR><TR><TD ALIGN="LEFT">clinic_id</TD><TD ALIGN="LEFT">PK</TD></TR><TR><TD ALIGN="LEFT">clinic_name</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">address</TD><TD ALIGN="LEFT"></TD></TR></TABLE>> shape=plaintext]
+	}
+	subgraph cluster_Schedule {
+		color=lightgrey style=filled
+		Schedule [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0"><TR><TD COLSPAN="2" BGCOLOR="black"><FONT COLOR="white"><B>Schedule</B></FONT></TD></TR><TR><TD ALIGN="LEFT">schedule_id</TD><TD ALIGN="LEFT">PK</TD></TR><TR><TD ALIGN="LEFT">doctor_id (FK)</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">clinic_id (FK)</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">day_of_week</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">start_time</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">end_time</TD><TD ALIGN="LEFT"></TD></TR></TABLE>> shape=plaintext]
+	}
+	subgraph cluster_Visits {
+		color=lightgrey style=filled
+		Visits [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0"><TR><TD COLSPAN="2" BGCOLOR="black"><FONT COLOR="white"><B>Visits</B></FONT></TD></TR><TR><TD ALIGN="LEFT">visit_id</TD><TD ALIGN="LEFT">PK</TD></TR><TR><TD ALIGN="LEFT">visit_date</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">doctor_id (FK)</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">patient_id (FK)</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">diagnosis</TD><TD ALIGN="LEFT"></TD></TR></TABLE>> shape=plaintext]
+	}
+	subgraph cluster_Rooms {
+		color=lightgrey style=filled
+		Rooms [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0"><TR><TD COLSPAN="2" BGCOLOR="black"><FONT COLOR="white"><B>Rooms</B></FONT></TD></TR><TR><TD ALIGN="LEFT">room_id</TD><TD ALIGN="LEFT">PK</TD></TR><TR><TD ALIGN="LEFT">clinic_id (FK)</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">doctor_id (FK)</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">room_number</TD><TD ALIGN="LEFT"></TD></TR></TABLE>> shape=plaintext]
+	}
+	subgraph cluster_MedicalCard {
+		color=lightgrey style=filled
+		MedicalCard [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0"><TR><TD COLSPAN="2" BGCOLOR="black"><FONT COLOR="white"><B>MedicalCard</B></FONT></TD></TR><TR><TD ALIGN="LEFT">medical_card_id</TD><TD ALIGN="LEFT">PK</TD></TR><TR><TD ALIGN="LEFT">patient_id (FK)</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">visit_date</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">doctor_full_name</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">treatment</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">diagnosis</TD><TD ALIGN="LEFT"></TD></TR></TABLE>> shape=plaintext]
+	}
+	Doctors -> Schedule [label="1:M"]
+	Doctors -> Visits [label="1:M"]
+	Doctors -> Rooms [label="1:M"]
+	Patients -> Visits [label="1:M"]
+	Patients -> MedicalCard [label="1:M"]
+	Clinics -> Schedule [label="1:M"]
+	Clinics -> Rooms [label="1:M"]
+}

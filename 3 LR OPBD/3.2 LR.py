@@ -16,12 +16,14 @@ def create_entity(dot, entity_name, attributes, pk):
                                                      + '</TABLE>>')
 
 # Определяем сущности и их атрибуты
-create_entity(dot, 'Routes', ['Code and route name ', 'Duration', 'Type of transport'], 'Routes')
-create_entity(dot, 'Cost', ['Route code', 'Cost', 'Availability of seats'], 'Cost')
+create_entity(dot, 'Routes', ['Code route', 'Route name'], 'Routes')
+create_entity(dot, 'Transports', ['Code Transport', 'Name transport'], 'Transports')
+create_entity(dot, 'Result', ['Code route', 'Code Transport', 'Cost', 'Availability of seats', 'Duration'], 'Result')
 
 # Определяем связи между сущностями
-dot.edge('Routes', 'Cost', label='1:M')
+dot.edge('Routes', 'Result', label='1:M')
+dot.edge('Transports', 'Result', label='1:M')
 
 # Сохраняем и отображаем граф
-dot.render('Model.png')
+dot.render('Res')
 

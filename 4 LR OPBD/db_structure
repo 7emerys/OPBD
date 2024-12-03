@@ -1,0 +1,32 @@
+// IDEF1X Model for Database Structure with Foreign Keys
+digraph {
+	subgraph cluster_Categories {
+		color=lightgrey style=filled
+		Categories [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0"><TR><TD COLSPAN="2" BGCOLOR="black"><FONT COLOR="white"><B>Categories</B></FONT></TD></TR><TR><TD ALIGN="LEFT">CategoryID</TD><TD ALIGN="LEFT">PK</TD></TR><TR><TD ALIGN="LEFT">CategoryName</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">Description</TD><TD ALIGN="LEFT"></TD></TR></TABLE>> shape=plaintext]
+	}
+	subgraph cluster_Products {
+		color=lightgrey style=filled
+		Products [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0"><TR><TD COLSPAN="2" BGCOLOR="black"><FONT COLOR="white"><B>Products</B></FONT></TD></TR><TR><TD ALIGN="LEFT">ProductID</TD><TD ALIGN="LEFT">PK</TD></TR><TR><TD ALIGN="LEFT">ProductName</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">Description</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">Price</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">CategoryID</TD><TD ALIGN="LEFT">FK</TD></TR><TR><TD ALIGN="LEFT">StockQuantity</TD><TD ALIGN="LEFT"></TD></TR></TABLE>> shape=plaintext]
+	}
+	subgraph cluster_Sellers {
+		color=lightgrey style=filled
+		Sellers [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0"><TR><TD COLSPAN="2" BGCOLOR="black"><FONT COLOR="white"><B>Sellers</B></FONT></TD></TR><TR><TD ALIGN="LEFT">SellerID</TD><TD ALIGN="LEFT">PK</TD></TR><TR><TD ALIGN="LEFT">LastName</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">FirstName</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">MiddleName</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">Position</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">HomeAddress</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">Phone</TD><TD ALIGN="LEFT"></TD></TR></TABLE>> shape=plaintext]
+	}
+	subgraph cluster_Customers {
+		color=lightgrey style=filled
+		Customers [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0"><TR><TD COLSPAN="2" BGCOLOR="black"><FONT COLOR="white"><B>Customers</B></FONT></TD></TR><TR><TD ALIGN="LEFT">CustomerID</TD><TD ALIGN="LEFT">PK</TD></TR><TR><TD ALIGN="LEFT">LastName</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">FirstName</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">MiddleName</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">PassportData</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">HomeAddress</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">Phone</TD><TD ALIGN="LEFT"></TD></TR></TABLE>> shape=plaintext]
+	}
+	subgraph cluster_Purchases {
+		color=lightgrey style=filled
+		Purchases [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0"><TR><TD COLSPAN="2" BGCOLOR="black"><FONT COLOR="white"><B>Purchases</B></FONT></TD></TR><TR><TD ALIGN="LEFT">PurchaseID</TD><TD ALIGN="LEFT">PK</TD></TR><TR><TD ALIGN="LEFT">PurchaseDate</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">CustomerID</TD><TD ALIGN="LEFT">FK</TD></TR><TR><TD ALIGN="LEFT">SellerID</TD><TD ALIGN="LEFT">FK</TD></TR></TABLE>> shape=plaintext]
+	}
+	subgraph cluster_PurchaseItems {
+		color=lightgrey style=filled
+		PurchaseItems [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0"><TR><TD COLSPAN="2" BGCOLOR="black"><FONT COLOR="white"><B>PurchaseItems</B></FONT></TD></TR><TR><TD ALIGN="LEFT">PurchaseItemID</TD><TD ALIGN="LEFT">PK</TD></TR><TR><TD ALIGN="LEFT">PurchaseID</TD><TD ALIGN="LEFT">FK</TD></TR><TR><TD ALIGN="LEFT">ProductID</TD><TD ALIGN="LEFT">FK</TD></TR><TR><TD ALIGN="LEFT">Quantity</TD><TD ALIGN="LEFT"></TD></TR></TABLE>> shape=plaintext]
+	}
+	Categories -> Products [label="1:M"]
+	Customers -> Purchases [label="1:M"]
+	Sellers -> Purchases [label="1:M"]
+	Purchases -> PurchaseItems [label="1:M"]
+	Products -> PurchaseItems [label="1:M"]
+}
