@@ -1,4 +1,5 @@
-import sqlite3
+import sqlite3, os.path, subprocess
+
 
 connection = sqlite3.connect('store.db')
 cursor = connection.cursor()
@@ -9,8 +10,7 @@ def create_db():
         CategoryID INTEGER PRIMARY KEY AUTOINCREMENT,
         CategoryName TEXT NOT NULL,
         Description TEXT,
-        ParentCategoryID INTEGER,
-        FOREIGN KEY (ParentCategoryID) REFERENCES Categories(CategoryID)
+        ParentCategoryID INTEGER
     )
     ''')
 
@@ -21,8 +21,7 @@ def create_db():
         Description TEXT,
         Price REAL NOT NULL,
         CategoryID INTEGER NOT NULL,
-        StockQuantity INTEGER NOT NULL,
-        FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID)
+        StockQuantity INTEGER NOT NULL
     )
     ''')
 
@@ -55,9 +54,7 @@ def create_db():
         PurchaseID INTEGER PRIMARY KEY AUTOINCREMENT,
         PurchaseDate DATETIME NOT NULL,
         CustomerID INTEGER NOT NULL,
-        SellerID INTEGER NOT NULL,
-        FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
-        FOREIGN KEY (SellerID) REFERENCES Sellers(SellerID)
+        SellerID INTEGER NOT NULL
     )
     ''')
 
@@ -66,10 +63,15 @@ def create_db():
         PurchaseItemID INTEGER PRIMARY KEY AUTOINCREMENT,
         PurchaseID INTEGER NOT NULL,
         ProductID INTEGER NOT NULL,
-        Quantity INTEGER NOT NULL,
-        FOREIGN KEY (PurchaseID) REFERENCES Purchases(PurchaseID),
-        FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+        Quantity INTEGER NOT NULL
     )
     ''')
 
     connection.commit()
+
+
+
+if not os.path.exists('store.db'):
+    create_db()
+subprocess.run(['C:/Users/arsen/AppData/Local/Packages/PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0/LocalCache/local-packages/Python310/Scripts/sqlacodegen', 'sqlite:///store.db', '--outfile', 'model.py'])
+
