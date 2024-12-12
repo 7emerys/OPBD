@@ -71,7 +71,7 @@ def create_db():
 
 
 
-if not os.path.exists('store.db'):
+if not os.path.exists('EgorCH.db'):
     create_db()
-subprocess.run(['C:/Users/arsen/AppData/Local/Packages/PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0/LocalCache/local-packages/Python310/Scripts/sqlacodegen', 'sqlite:///store.db', '--outfile', 'model.py'])
+subprocess.run(['C:/Users/arsen/AppData/Local/Packages/PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0/LocalCache/local-packages/Python310/Scripts/sqlacodegen', 'sqlite:///EgorCH.db', '--outfile', 'model_EgorCH.py'])
 

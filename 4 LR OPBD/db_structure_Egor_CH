@@ -1,0 +1,27 @@
+// IDEF1X Model for Database Structure with Foreign Keys
+digraph {
+	subgraph cluster_Owners {
+		color=lightgrey style=filled
+		Owners [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0"><TR><TD COLSPAN="2" BGCOLOR="black"><FONT COLOR="white"><B>Owners</B></FONT></TD></TR><TR><TD ALIGN="LEFT">OwnerID</TD><TD ALIGN="LEFT">PK</TD></TR><TR><TD ALIGN="LEFT">FirstName</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">LastName</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">Patronymic</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">PassportData</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">OwnershipDocumentNumber</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">Address</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">Phone</TD><TD ALIGN="LEFT"></TD></TR></TABLE>> shape=plaintext]
+	}
+	subgraph cluster_Properties {
+		color=lightgrey style=filled
+		Properties [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0"><TR><TD COLSPAN="2" BGCOLOR="black"><FONT COLOR="white"><B>Properties</B></FONT></TD></TR><TR><TD ALIGN="LEFT">PropertyID</TD><TD ALIGN="LEFT">PK</TD></TR><TR><TD ALIGN="LEFT">PropertyType</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">Address</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">Phone</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">TotalArea</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">LivingArea</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">RentalPrice</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">OwnerID</TD><TD ALIGN="LEFT">FK</TD></TR></TABLE>> shape=plaintext]
+	}
+	subgraph cluster_IndividualTenants {
+		color=lightgrey style=filled
+		IndividualTenants [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0"><TR><TD COLSPAN="2" BGCOLOR="black"><FONT COLOR="white"><B>IndividualTenants</B></FONT></TD></TR><TR><TD ALIGN="LEFT">TenantID</TD><TD ALIGN="LEFT">PK</TD></TR><TR><TD ALIGN="LEFT">FirstName</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">LastName</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">Patronymic</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">PassportData</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">Workplace</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">Position</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">Phone</TD><TD ALIGN="LEFT"></TD></TR></TABLE>> shape=plaintext]
+	}
+	subgraph cluster_LegalEntityTenants {
+		color=lightgrey style=filled
+		LegalEntityTenants [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0"><TR><TD COLSPAN="2" BGCOLOR="black"><FONT COLOR="white"><B>LegalEntityTenants</B></FONT></TD></TR><TR><TD ALIGN="LEFT">TenantID</TD><TD ALIGN="LEFT">PK</TD></TR><TR><TD ALIGN="LEFT">OrganizationName</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">Address</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">BankDetails</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">Phone</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">ContactFirstName</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">ContactLastName</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">ContactPatronymic</TD><TD ALIGN="LEFT"></TD></TR></TABLE>> shape=plaintext]
+	}
+	subgraph cluster_Leases {
+		color=lightgrey style=filled
+		Leases [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0"><TR><TD COLSPAN="2" BGCOLOR="black"><FONT COLOR="white"><B>Leases</B></FONT></TD></TR><TR><TD ALIGN="LEFT">LeaseID</TD><TD ALIGN="LEFT">PK</TD></TR><TR><TD ALIGN="LEFT">PropertyID</TD><TD ALIGN="LEFT">FK</TD></TR><TR><TD ALIGN="LEFT">TenantID</TD><TD ALIGN="LEFT">FK</TD></TR><TR><TD ALIGN="LEFT">LeaseDate</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">StartDate</TD><TD ALIGN="LEFT"></TD></TR><TR><TD ALIGN="LEFT">EndDate</TD><TD ALIGN="LEFT"></TD></TR></TABLE>> shape=plaintext]
+	}
+	Owners -> Properties [label="1:M"]
+	Properties -> Leases [label="1:1"]
+	IndividualTenants -> Leases [label="1:M"]
+	LegalEntityTenants -> Leases [label="1:M"]
+}

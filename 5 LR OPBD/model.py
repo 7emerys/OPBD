@@ -1,4 +1,4 @@
-from sqlalchemy import Column, DateTime, Float, Integer, Text, ForeignKey
+from sqlalchemy import Column, DateTime, Float, Integer, Text, ForeignKey, Table
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -10,10 +10,9 @@ class Category(Base):
     CategoryID = Column(Integer, primary_key=True)
     CategoryName = Column(Text, nullable=False)
     Description = Column(Text)
-    ParentCategoryID = Column(Integer, ForeignKey('Categories.CategoryID'))  # Внешний ключ на ту же таблицу
 
     # Связи
-    parent_category = relationship("Category", remote_side=[Category.CategoryID], backref="subcategories")
+    parent_category = relationship("Category", remote_side=[CategoryID], backref="subcategories")
 
 class Customer(Base):
     __tablename__ = 'Customers'
@@ -44,11 +43,11 @@ class PurchaseItem(Base):
 
     PurchaseItemID = Column(Integer, primary_key=True)
     PurchaseID = Column(Integer, ForeignKey('Purchases.PurchaseID'), nullable=False)  # Внешний ключ на Purchases
-    ProductID = Column(Integer, ForeignKey('Products.ProductID'), nullable=False)     # Внешний ключ на Products
+    ProductID = Column(Integer, ForeignKey('Products.ProductID'), nullable=False)  # Внешний ключ на Products
     Quantity = Column(Integer, nullable=False)
 
     # Связи
-    purchase = relationship("Purchase")
+    purchase = relationship("Purchase", backref="items")
     product = relationship("Product")
 
 class Purchase(Base):
@@ -57,12 +56,11 @@ class Purchase(Base):
     PurchaseID = Column(Integer, primary_key=True)
     PurchaseDate = Column(DateTime, nullable=False)
     CustomerID = Column(Integer, ForeignKey('Customers.CustomerID'), nullable=False)  # Внешний ключ на Customers
-    SellerID = Column(Integer, ForeignKey('Sellers.SellerID'), nullable=False)        # Внешний ключ на Sellers
+    SellerID = Column(Integer, ForeignKey('Sellers.SellerID'), nullable=False)  # Внешний ключ на Sellers
 
     # Связи
     customer = relationship("Customer")
     seller = relationship("Seller")
-    items = relationship("PurchaseItem", backref="purchase")
 
 class Seller(Base):
     __tablename__ = 'Sellers'
@@ -76,8 +74,8 @@ class Seller(Base):
     Phone = Column(Text)
 
 # Объявление дополнительной таблицы для SQLite
-t_sqlite_sequence = Table(
+sqlite_sequence = Table(
     'sqlite_sequence', Base.metadata,
-    Column('name', NullType),
-    Column('seq', NullType)
+    Column('name', Text),  # Используем Text для имени таблицы
+    Column('seq', Integer)  # Используем Integer для последовательности
 )

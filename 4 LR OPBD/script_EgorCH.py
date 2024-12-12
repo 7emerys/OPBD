@@ -1,64 +1,35 @@
 from graphviz import Digraph
 
-# Создаем новый граф
-dot = Digraph(comment='Logical Model of Real Estate Rental Database')
+# Создаем объект для графа
+dot = Digraph(comment='IDEF1X Model for Database Structure with Foreign Keys')
 
-# Таблица "Owner"
-dot.node('Owner', '''Owner
-PK  id
-    last_name
-    first_name
-    patronymic
-    passport_number
-    ownership_document_number
-    address
-    phone''')
+# Определяем стиль IDEF1X для сущностей
+def create_entity(dot, entity_name, attributes, pk):
+    with dot.subgraph(name='cluster_' + entity_name) as c:
+        c.attr(style='filled', color='lightgrey')
+        c.node(entity_name, shape='plaintext', label=f'<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">'
+                                                     f'<TR><TD COLSPAN="2" BGCOLOR="black"><FONT COLOR="white">'
+                                                     f'<B>{entity_name}</B></FONT></TD></TR>'
+                                                     + ''.join([f'<TR><TD ALIGN="LEFT">{attr}</TD>'
+                                                                f'<TD ALIGN="LEFT">{("PK" if attr == pk else "FK" if "ID" in attr else "")}</TD></TR>'
+                                                                for attr in attributes])
+                                                     + '</TABLE>>')
 
-# Таблица "Property"
-dot.node('Property', '''Property
-PK  id
-    type
-    address
-    phone
-    total_area
-    living_area
-    rental_price
-FK  owner_id''')
+create_entity(dot, 'Owners', ['OwnerID', 'FirstName', 'LastName', 'Patronymic', 'PassportData', 'OwnershipDocumentNumber', 'Address', 'Phone'], 'OwnerID')
+create_entity(dot, 'Properties', ['PropertyID', 'PropertyType', 'Address', 'Phone', 'TotalArea', 'LivingArea', 'RentalPrice', 'OwnerID'], 'PropertyID')
+create_entity(dot, 'IndividualTenants', ['TenantID', 'FirstName', 'LastName', 'Patronymic', 'PassportData', 'Workplace', 'Position', 'Phone'], 'TenantID')
+create_entity(dot, 'LegalEntityTenants', ['TenantID', 'OrganizationName', 'Address', 'BankDetails', 'Phone', 'ContactFirstName', 'ContactLastName', 'ContactPatronymic'], 'TenantID')
+create_entity(dot, 'Leases', ['LeaseID', 'PropertyID', 'TenantID', 'LeaseDate', 'StartDate', 'EndDate'], 'LeaseID')
 
-# Таблица "Client"
-dot.node('Client', '''Client
-PK  id
-    client_type
-    last_name
-    first_name
-    patronymic
-    passport_number
-    workplace
-    position
-    phone
-    organization_name
-    organization_address
-    bank_details
-    contact_last_name
-    contact_first_name
-    contact_patronymic''')
+# Определяем связи между сущностями
+dot.edge('Owners', 'Properties', label='1:M')
+dot.edge('Properties', 'Leases', label='1:1')
+dot.edge('IndividualTenants', 'Leases', label='1:M')
+dot.edge('LegalEntityTenants', 'Leases', label='1:M')
 
-# Таблица "Rental Agreement"
-dot.node('RentalAgreement', '''RentalAgreement
-PK  id
-    date_created
-    start_date
-    end_date
-FK  property_id
-FK  client_id''')
 
-# Определяем связи между таблицами
-dot.edge('Owner', 'Property', 'owns')
-dot.edge('Property', 'RentalAgreement', 'rented in')
-dot.edge('Client', 'RentalAgreement', 'enters into')
 
-# Сохраняем граф в файл формата PNG
-dot.render('real_estate_rental_db', format='png', cleanup=True)
 
-# Выводим граф в формате текста
-print(dot.source)
+# Сохраняем и отображаем граф
+dot.render('db_structure_Egor_CH', format='png', cleanup=True)
+dot.view()
